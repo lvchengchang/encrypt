@@ -101,16 +101,7 @@ func deUploadHandle(w http.ResponseWriter, r *http.Request) {
 	defer f.Close()
 	io.Copy(f, file)
 
-	mod := flag.String("mod", "md5", "md5,sha1,sha256,crc32")
-	h, ok := map[string]hash.Hash{
-		"md5":    md5.New(),
-		"sha1":   sha1.New(),
-		"sha256": sha256.New(),
-		"crc32":  crc32.NewIEEE(),
-	}[*mod]
-	if !ok {
-		h = md5.New()
-	}
+	h := md5.New()
 	// 进行文件
 	err = decFile("./de_uploads/"+handler.Filename, h)
 	if err != nil {
